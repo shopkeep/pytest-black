@@ -1,6 +1,8 @@
 pytest-black
 ============
 
+[![Build Status](https://travis-ci.org/shopkeep/pytest-black.svg?branch=master)](https://travis-ci.org/shopkeep/pytest-black)
+
 A pytest plugin to enable format checking with [black](https://github.com/ambv/black).
 
 
@@ -14,12 +16,8 @@ Requirements
 Installation
 ------------
 
-To install from source:
-
 ```
-$ git clone git@github.com:shopkeep/pytest-black.git
-$ cd pytest-black
-$ pip install -e .
+$ pip install pytest-black
 ```
 
 
