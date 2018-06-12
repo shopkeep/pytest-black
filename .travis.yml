@@ -1,20 +1,22 @@
 sudo: false
 language: python
-
 matrix:
   include:
-    - python: 3.6
-      env: TOX_ENV=py36
-
+  - python: 3.6
+    env: TOX_ENV=py36
 install:
-  - pip install tox
-
+- pip install tox
 script:
-  - tox -e $TOX_ENV
-
+- tox -e $TOX_ENV
 before_cache:
-  - rm -rm $HOME/.cache/pip/log
-
+- rm -rm $HOME/.cache/pip/log
 cache:
   directories:
-    - $HOME/.cache/pip
+  - "$HOME/.cache/pip"
+deploy:
+  provider: pypi
+  user: shopkeep
+  password:
+    secure: GFN0LByZYYAWMcfAtJ5BXOhwuslHdXoAHgKXbg3e4i2pLafMLU51SB9tIxwq1dbrRk2vm6V6G4hTuhLhSpcV+NihQ8QkjnOEBwMC8VVquKzx/1Pql2Qe3ORFLyKssM0S0WoTbf+nSSr+osjBLqntZDa9UoQxn34tzcHf+WR7AdYXnGspgZYLBJ+zumElTDeknjzVLYkWNQnjucbCqZSiFPVdsrUD5mKAiJLtFTAtKMyIB/+JN/bliE6RYxHk+m/cwd9nuBqYgDQXYvv40zeV/VpWdPwpMd4Az3msqk/68GirDTkvkyo/+oDcJurPuwbn4d3kbSDfB42ekKIKoDNe3UZ0C1dK/VJsmKLvOGV1ueCYJc/SV/NivQObS2TSWpDlUKdP+BrM2KVF6Edybq0h6X8LvVk3oWs3mVDRrWCN+pfSBwtHrP08v429xtnfSc9ySpLG7baL34j64ZCBkPCku6bZitNb/AA5zfJjeXPcEUkmBfbIgDPUXLzUqIN0EX2gFNMqzwz6ti8hkNwKAZbSpj6vxSnbgA98euBGj9tImHSXvRr4WV3rPbXqyFBk7pIX6HqCBagduevNn+cnHLrVNHGtHn59wrTSY30rOUM4FwDYneXHRPLt+P3rqe6svXaY5XTS/iJAMoNyWvbrfv/36LefBoH9Zp33/FdIRpZ6O38=
+  on:
+    tags: true
