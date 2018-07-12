@@ -23,6 +23,8 @@ def pytest_collect_file(path, parent):
 class BlackItem(pytest.Item, pytest.File):
     def __init__(self, path, parent):
         super(BlackItem, self).__init__(path, parent)
+        self._nodeid += "::BLACK"
+        self.add_marker("black")
 
     def runtest(self):
         cmd = "black --check --diff --quiet {}".format(self.fspath)
