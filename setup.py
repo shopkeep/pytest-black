@@ -25,7 +25,7 @@ setup(
     long_description_content_type="text/markdown",
     py_modules=["pytest_black"],
     python_requires=">=3.6",
-    install_requires=["pytest>=3.5.0", "black==18.6b2"],
+    install_requires=["pytest>=3.5.0", "black>=18.6b4"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: Pytest",
