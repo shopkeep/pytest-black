@@ -27,12 +27,11 @@ class BlackItem(pytest.Item, pytest.File):
         self.add_marker("black")
 
     def runtest(self):
-        cmd = "black --check --diff --quiet {}".format(self.fspath)
+        cmd = ["black", "--check", "--diff", "--quiet", str(self.fspath)]
         try:
             subprocess.run(
                 cmd,
                 check=True,
-                shell=True,
                 stdout=subprocess.PIPE,
                 universal_newlines=True,
             )
