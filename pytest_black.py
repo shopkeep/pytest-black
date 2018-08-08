@@ -32,7 +32,6 @@ class BlackItem(pytest.Item, pytest.File):
             subprocess.run(
                 cmd,
                 check=True,
-                shell=True,
                 stdout=subprocess.PIPE,
                 universal_newlines=True,
             )
