@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name="pytest-black",
-    version="0.2.1",
+    version="0.3.0",
     author="ShopKeep Inc",
     author_email="oss@shopkeep.com",
     maintainer="ShopKeep Inc",
