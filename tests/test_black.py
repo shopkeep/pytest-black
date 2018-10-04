@@ -61,3 +61,58 @@ def test_mtime_cache(testdir):
     p.write(contents)
     result = testdir.runpytest("--black")
     result.assert_outcomes(passed=1)
+
+
+def test_exclude(testdir):
+    """Assert test is skipped if path is excluded even if also included
+    """
+    testdir.makefile(
+        "pyproject.toml",
+        """
+        [tool.black]
+            include = 'test_exclude.py'
+            exclude = '.*'
+    """,
+    )
+    p = testdir.makepyfile(
+        """
+        def hello():
+            print("Hello, world!")
+    """
+    )
+
+    # replace trailing newline (stripped by testdir.makepyfile)
+    p = p.write(p.read() + "\n")
+
+    # Rename pyproject.toml ¯\_(ツ)_/¯
+    testdir.run("mv", "test_exclude.pyproject.toml", "pyproject.toml")
+
+    result = testdir.runpytest("--black")
+    result.assert_outcomes(skipped=1, passed=0)
+
+
+def test_include(testdir):
+    """Assert test is not skipped if path is included but not excluded
+    """
+    testdir.makefile(
+        "pyproject.toml",
+        """
+        [tool.black]
+            include = 'test_include'
+    """,
+    )
+    p = testdir.makepyfile(
+        """
+        def hello():
+            print("Hello, world!")
+    """
+    )
+
+    # replace trailing newline (stripped by testdir.makepyfile)
+    p = p.write(p.read() + "\n")
+
+    # Rename pyproject.toml ¯\_(ツ)_/¯
+    testdir.run("mv", "test_include.pyproject.toml", "pyproject.toml")
+
+    result = testdir.runpytest("--black")
+    result.assert_outcomes(skipped=0, passed=1)

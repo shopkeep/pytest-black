@@ -33,6 +33,11 @@ $ pytest --black
 The plugin will output a diff of suggested formatting changes (if any exist). Changes will _not_ be applied automatically.
 
 
+Configuration
+-------------
+
+You can override default black configuration options by placing a `pyproject.toml` file in your project directory. See example configuration [here](https://github.com/ambv/black/blob/master/pyproject.toml).
+
 Testing
 -------
 
