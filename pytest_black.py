@@ -2,9 +2,12 @@
 
 # stdlib imports
 import subprocess
+import re
 
 # third-party imports
 import pytest
+import toml
+
 
 HISTKEY = "black/mtimes"
 
@@ -39,6 +42,11 @@ class BlackItem(pytest.Item, pytest.File):
         super(BlackItem, self).__init__(path, parent)
         self._nodeid += "::BLACK"
         self.add_marker("black")
+        try:
+            with open("pyproject.toml") as toml_file:
+                self.pyproject = toml.load(toml_file)["tool"]["black"]
+        except Exception:
+            self.pyproject = {}
 
     def setup(self):
         mtimes = getattr(self.config, "_blackmtimes", {})
@@ -47,14 +55,14 @@ class BlackItem(pytest.Item, pytest.File):
         if self._blackmtime == old:
             pytest.skip("file(s) previously passed black format checks")
 
+        if self._skip_test():
+            pytest.skip("file(s) excluded by pyproject.toml")
+
     def runtest(self):
         cmd = ["black", "--check", "--diff", "--quiet", str(self.fspath)]
         try:
             subprocess.run(
-                cmd,
-                check=True,
-                stdout=subprocess.PIPE,
-                universal_newlines=True,
+                cmd, check=True, stdout=subprocess.PIPE, universal_newlines=True
             )
         except subprocess.CalledProcessError as e:
             raise BlackError(e)
@@ -69,6 +77,19 @@ class BlackItem(pytest.Item, pytest.File):
 
     def reportinfo(self):
         return (self.fspath, -1, "Black format check")
+
+    def _skip_test(self):
+        return self._excluded() or (not self._included())
+
+    def _included(self):
+        if "include" not in self.pyproject:
+            return True
+        return re.search(self.pyproject["include"], str(self.fspath))
+
+    def _excluded(self):
+        if "exclude" not in self.pyproject:
+            return False
+        return re.search(self.pyproject["exclude"], str(self.fspath))
 
 
 class BlackError(Exception):
