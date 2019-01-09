@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import subprocess
 import re
 
 # third-party imports
 import pytest
 import toml
+from black import main as black
+from click.testing import CliRunner
 
 
 HISTKEY = "black/mtimes"
@@ -59,20 +60,19 @@ class BlackItem(pytest.Item, pytest.File):
             pytest.skip("file(s) excluded by pyproject.toml")
 
     def runtest(self):
-        cmd = ["black", "--check", "--diff", "--quiet", str(self.fspath)]
-        try:
-            subprocess.run(
-                cmd, check=True, stdout=subprocess.PIPE, universal_newlines=True
-            )
-        except subprocess.CalledProcessError as e:
-            raise BlackError(e)
+        runner = CliRunner()
+        result = runner.invoke(
+            black, ["--check", "--diff", "--quiet", str(self.fspath)]
+        )
+        if result.exit_code != 0:
+            raise BlackError(result)
 
         mtimes = getattr(self.config, "_blackmtimes", {})
         mtimes[str(self.fspath)] = self._blackmtime
 
     def repr_failure(self, excinfo):
         if excinfo.errisinstance(BlackError):
-            return excinfo.value.args[0].stdout
+            return excinfo.value.args[0].output
         return super(BlackItem, self).repr_failure(excinfo)
 
     def reportinfo(self):
