@@ -3,6 +3,7 @@
 # stdlib imports
 import subprocess
 import re
+import sys
 
 # third-party imports
 import pytest
@@ -59,7 +60,7 @@ class BlackItem(pytest.Item, pytest.File):
             pytest.skip("file(s) excluded by pyproject.toml")
 
     def runtest(self):
-        cmd = ["black", "--check", "--diff", "--quiet", str(self.fspath)]
+        cmd = [sys.executable, "-m", "black", "--check", "--diff", "--quiet", str(self.fspath)]
         try:
             subprocess.run(
                 cmd, check=True, stdout=subprocess.PIPE, universal_newlines=True
