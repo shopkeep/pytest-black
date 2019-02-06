@@ -55,7 +55,7 @@ def test_mtime_cache(testdir):
     # Run it again, it should be skipped
     result = testdir.runpytest("--black", "-rs")
     result.assert_outcomes(skipped=1)
-    result.stdout.fnmatch_lines(["SKIP * previously passed black format checks"])
+    result.stdout.fnmatch_lines(["SKIP*previously passed black format checks"])
 
     # Update the file and test again.
     p.write(contents)
