@@ -13,7 +13,6 @@ def read(fname):
 
 setup(
     name="pytest-black",
-    version="0.3.3",
     author="ShopKeep Inc",
     author_email="oss@shopkeep.com",
     maintainer="ShopKeep Inc",
@@ -26,6 +25,8 @@ setup(
     py_modules=["pytest_black"],
     python_requires=">=3.6",
     install_requires=["pytest>=3.5.0", "black==18.9b0"],
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: Pytest",
