@@ -24,7 +24,7 @@ setup(
     long_description_content_type="text/markdown",
     py_modules=["pytest_black"],
     python_requires=">=3.6",
-    install_requires=["pytest>=3.5.0", "black==18.9b0"],
+    install_requires=["pytest>=3.5.0", "black==19.3b0"],
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
     classifiers=[
