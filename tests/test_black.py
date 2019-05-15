@@ -116,3 +116,21 @@ def test_include(testdir):
 
     result = testdir.runpytest("--black")
     result.assert_outcomes(skipped=0, passed=1)
+
+
+def test_pytest_deprecation_warning(testdir):
+    """Assert no deprecation warning is raised during test."""
+    p = testdir.makepyfile(
+        """
+        def hello():
+            print("Hello, world!")
+    """
+    )
+    # replace trailing newline (stripped by testdir.makepyfile)
+    p = p.write(p.read() + "\n")
+
+    result = testdir.runpytest("--black")
+    result.assert_outcomes(passed=1)
+
+    out = "\n".join(result.stdout.lines)
+    assert "PytestUnknownMarkWarning" not in out
