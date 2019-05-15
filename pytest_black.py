@@ -30,6 +30,7 @@ def pytest_configure(config):
     # load cached mtimes at session startup
     if config.option.black and hasattr(config, "cache"):
         config._blackmtimes = config.cache.get(HISTKEY, {})
+    config.addinivalue_line("markers", "black: enable format checking with black")
 
 
 def pytest_unconfigure(config):
