@@ -11,7 +11,7 @@ def test_help_message(testdir):
     result.stdout.fnmatch_lines(["*--black*enable format checking with black"])
 
 
-def test_fail(testdir, black_available):
+def test_fail(testdir):
     """Assert test fails due to single quoted strings
     """
     testdir.makepyfile(
@@ -24,7 +24,7 @@ def test_fail(testdir, black_available):
     result.assert_outcomes(failed=1)
 
 
-def test_pass(testdir, black_available):
+def test_pass(testdir):
     """Assert test passes when no formatting issues are found
     """
     p = testdir.makepyfile(
@@ -40,7 +40,7 @@ def test_pass(testdir, black_available):
     result.assert_outcomes(passed=1)
 
 
-def test_mtime_cache(testdir, black_available):
+def test_mtime_cache(testdir):
     """Assert test is skipped when file hasn't changed
     """
     p = testdir.makepyfile(
@@ -68,7 +68,7 @@ def test_mtime_cache(testdir, black_available):
     result.assert_outcomes(passed=1)
 
 
-def test_exclude(testdir, black_available):
+def test_exclude(testdir):
     """Assert test is skipped if path is excluded even if also included
     """
     testdir.makefile(
@@ -96,7 +96,7 @@ def test_exclude(testdir, black_available):
     result.assert_outcomes(skipped=1, passed=0)
 
 
-def test_include(testdir, black_available):
+def test_include(testdir):
     """Assert test is not skipped if path is included but not excluded
     """
     testdir.makefile(
