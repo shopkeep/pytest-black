@@ -4,7 +4,6 @@
 import subprocess
 import re
 import sys
-import importlib
 
 # third-party imports
 import pytest
