@@ -51,6 +51,7 @@ class BlackItem(pytest.Item, pytest.File):
             self.pyproject = {}
 
     def setup(self):
+        pytest.importorskip("black")
         mtimes = getattr(self.config, "_blackmtimes", {})
         self._blackmtime = self.fspath.mtime()
         old = mtimes.get(str(self.fspath), 0)

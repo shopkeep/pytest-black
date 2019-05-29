@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import pytest
+
+
+pytestmark = pytest.mark.usefixtures('black_available')
+
 
 def test_help_message(testdir):
     result = testdir.runpytest("--help")
