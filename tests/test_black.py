@@ -96,6 +96,43 @@ def test_exclude(testdir):
     result.assert_outcomes(skipped=1, passed=0)
 
 
+def test_exclude_folder(testdir):
+    """Assert test is skipped for files in a folder
+    """
+    testdir.makefile(
+        "pyproject.toml",
+        """
+        [tool.black]
+            exclude = '''
+            (
+              /(
+                  first_folder
+                | ignore_folder
+              )/
+            )
+    '''
+    """,
+    )
+    p = testdir.makepyfile(
+        """
+        def hello():
+            print("Hello, world!")
+    """
+    )
+    # replace trailing newline (stripped by testdir.makepyfile)
+    p = p.write(p.read() + "\n")
+
+    # Move file into folder that should be excluded
+    ignore_folder = testdir.mkdir("ignore_folder")
+    testdir.run("mv", "test_exclude_folder.py", ignore_folder)
+
+    # Rename pyproject.toml ¯\_(ツ)_/¯
+    testdir.run("mv", "test_exclude_folder.pyproject.toml", "pyproject.toml")
+
+    result = testdir.runpytest("--black")
+    result.assert_outcomes(skipped=1, passed=0)
+
+
 def test_include(testdir):
     """Assert test is not skipped if path is included but not excluded
     """

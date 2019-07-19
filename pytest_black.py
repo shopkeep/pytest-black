@@ -46,7 +46,12 @@ class BlackItem(pytest.Item, pytest.File):
         self.add_marker("black")
         try:
             with open("pyproject.toml") as toml_file:
-                self.pyproject = toml.load(toml_file)["tool"]["black"]
+                settings = toml.load(toml_file)["tool"]["black"]
+            if "include" in settings.keys():
+                settings["include"] = self._re_fix_verbose(settings["include"])
+            if "exclude" in settings.keys():
+                settings["exclude"] = self._re_fix_verbose(settings["exclude"])
+            self.pyproject = settings
         except Exception:
             self.pyproject = {}
 
@@ -93,6 +98,11 @@ class BlackItem(pytest.Item, pytest.File):
         if "exclude" not in self.pyproject:
             return False
         return re.search(self.pyproject["exclude"], str(self.fspath))
+
+    def _re_fix_verbose(self, regex):
+        if "\n" in regex:
+            regex = "(?x)" + regex
+        return re.compile(regex)
 
 
 class BlackError(Exception):
