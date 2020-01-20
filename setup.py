@@ -26,7 +26,7 @@ setup(
     python_requires=">=2.7",
     install_requires=[
         "pytest>=3.5.0",
-        'black==19.3b0; python_version >= "3.6"',
+        'black>=19.3b0; python_version >= "3.6"',
         "toml",
     ],
     use_scm_version=True,
