@@ -23,7 +23,10 @@ def pytest_addoption(parser):
 def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.black and path.ext == ".py":
-        return BlackItem(path, parent)
+        if hasattr(BlackItem, "from_parent"):
+            return BlackItem.from_parent(parent, fspath=path)
+        else:
+            return BlackItem(path, parent)
 
 
 def pytest_configure(config):
@@ -40,8 +43,8 @@ def pytest_unconfigure(config):
 
 
 class BlackItem(pytest.Item, pytest.File):
-    def __init__(self, path, parent):
-        super(BlackItem, self).__init__(path, parent)
+    def __init__(self, fspath, parent):
+        super(BlackItem, self).__init__(fspath, parent)
         self._nodeid += "::BLACK"
         self.add_marker("black")
         try:
