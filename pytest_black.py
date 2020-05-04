@@ -43,8 +43,8 @@ def pytest_unconfigure(config):
 
 
 class BlackItem(pytest.Item, pytest.File):
-    def __init__(self, path, parent):
-        super(BlackItem, self).__init__(path, parent)
+    def __init__(self, fspath, parent):
+        super(BlackItem, self).__init__(fspath, parent)
         self._nodeid += "::BLACK"
         self.add_marker("black")
         try:
