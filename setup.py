@@ -26,7 +26,9 @@ setup(
     python_requires=">=2.7",
     install_requires=[
         "pytest>=3.5.0",
-        'black>=19.3b0; python_version >= "3.6"',
+        # Minimum requirement on black 19.3b0 or later is not declared here as
+        # workaround for https://github.com/pypa/pipenv/issues/3928
+        'black; python_version >= "3.6"',
         "toml",
     ],
     use_scm_version=True,
