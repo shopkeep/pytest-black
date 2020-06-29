@@ -12,6 +12,7 @@ Requirements
 * [pytest](https://docs.pytest.org/en/latest/)
 * [black](https://github.com/ambv/black)
 
+There is a minimum requirement of black 19.3b0 or later.
 
 Installation
 ------------
