@@ -39,6 +39,21 @@ Configuration
 
 You can override default black configuration options by placing a `pyproject.toml` file in your project directory. See example configuration [here](https://github.com/ambv/black/blob/master/pyproject.toml).
 
+
+Python package management
+-------------------------
+For *poetry* to work correctly, include this in your pyproject.toml configuration file:
+
+```
+[tool.poetry.dev-dependencies]
+...
+black = { version = "*", allow-prereleases = true }
+...
+```
+
+This is necessary because at the time of writing all the *black* releases in PyPI have been tagged as pre-releases (beta code), which breaks *poetry*'s dependency resolution.
+
+
 Testing
 -------
 
