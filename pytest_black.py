@@ -107,6 +107,12 @@ class BlackItem(pytest.Item, pytest.File):
             regex = "(?x)" + regex
         return re.compile(regex)
 
+    def collect(self):
+        """ returns a list of children (items and collectors)
+            for this collection node.
+        """
+        return (self,)
+
 
 class BlackError(Exception):
     pass
