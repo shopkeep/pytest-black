@@ -45,7 +45,7 @@ def pytest_unconfigure(config):
 class BlackItem(pytest.Item, pytest.File):
     def __init__(self, fspath, parent):
         super(BlackItem, self).__init__(fspath, parent)
-        self._nodeid += "::BLACK"
+        self._nodeid += "-BLACK"
         self.add_marker("black")
         try:
             with open("pyproject.toml") as toml_file:
