@@ -22,7 +22,7 @@ def pytest_addoption(parser):
 
 def pytest_collect_file(path, parent):
     config = parent.config
-    if config.option.black and path.ext == ".py":
+    if config.option.black and path.ext in [".py", ".pyi"]:
         if hasattr(BlackItem, "from_parent"):
             return BlackItem.from_parent(parent, fspath=path)
         else:
