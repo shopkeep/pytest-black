@@ -72,8 +72,8 @@ def test_exclude(testdir):
     """Assert test is skipped if path is excluded even if also included
     """
     testdir.makefile(
-        "pyproject.toml",
-        """
+        ".toml",
+        pyproject = """
         [tool.black]
             include = 'test_exclude.py'
             exclude = '.*'
@@ -100,8 +100,8 @@ def test_exclude_folder(testdir):
     """Assert test is skipped for files in a folder
     """
     testdir.makefile(
-        "pyproject.toml",
-        """
+        ".toml",
+        pyproject = """
         [tool.black]
             exclude = '''
             (
@@ -137,8 +137,8 @@ def test_include(testdir):
     """Assert test is not skipped if path is included but not excluded
     """
     testdir.makefile(
-        "pyproject.toml",
-        """
+        ".toml",
+        pyproject = """
         [tool.black]
             include = 'test_include'
     """,
