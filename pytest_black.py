@@ -47,9 +47,11 @@ class BlackItem(pytest.Item, pytest.File):
         super(BlackItem, self).__init__(fspath, parent)
         self._nodeid += "::BLACK"
         self.add_marker("black")
+        self.pyproject_present = False
         try:
             with open("pyproject.toml") as toml_file:
                 settings = toml.load(toml_file)["tool"]["black"]
+                self.pyproject_present = True
             if "include" in settings.keys():
                 settings["include"] = self._re_fix_verbose(settings["include"])
             if "exclude" in settings.keys():
@@ -71,6 +73,8 @@ class BlackItem(pytest.Item, pytest.File):
 
     def runtest(self):
         cmd = [sys.executable, "-m", "black", "--check", "--diff", "--quiet", str(self.fspath)]
+        if self.pyproject_present:
+            cmd.extend(["--config", "pyproject.toml"])
         try:
             subprocess.run(
                 cmd, check=True, stdout=subprocess.PIPE, universal_newlines=True
