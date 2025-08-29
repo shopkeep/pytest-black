@@ -1,3 +1,8 @@
+---
+Project maintenance has been moved to [coherent-oss/pytest-black](https://github.com/coherent-oss/pytest-black)
+
+---
+
 pytest-black
 ============
 
