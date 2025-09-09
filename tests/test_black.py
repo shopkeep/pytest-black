@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from xml import dom
+from xml.dom.minidom import parse
 
 import pytest
 
@@ -176,3 +178,15 @@ def test_pytest_deprecation_warning(testdir):
 
     out = "\n".join(result.stdout.lines)
     assert "PytestUnknownMarkWarning" not in out
+
+
+def test_names(testdir):
+    """Assert test names are informative about what file was tested
+    """
+    file = testdir.makepyfile('def hello():\n    print("Hello, world!")')
+    file.write(data="\n", mode="a")
+
+    testdir.runpytest("--black", "--junit-xml=test-output.xml")
+    dom = parse((testdir.tmpdir / "test-output.xml").open())
+    test_case = dom.getElementsByTagName("testcase")[0]
+    assert "test_names.py" in test_case.getAttribute("name")
