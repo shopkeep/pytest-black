@@ -1,6 +1,10 @@
 language: python
 matrix:
   include:
+  - python: 3.10
+    env: TOX_ENV=py310,flake8
+  - python: 3.9
+    env: TOX_ENV=py39
   - python: 3.8
     env: TOX_ENV=py38
   - python: 3.7
@@ -9,8 +13,6 @@ matrix:
     env: TOX_ENV=py36
   - python: 3.5
     env: TOX_ENV=py35
-  - python: 2.7
-    env: TOX_ENV=py27
 install:
 - pip install tox
 script:
