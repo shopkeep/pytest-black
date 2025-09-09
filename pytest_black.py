@@ -39,7 +39,9 @@ def pytest_configure(config):
 def pytest_unconfigure(config):
     # save cached mtimes at end of session
     if hasattr(config, "_blackmtimes"):
-        config.cache.set(HISTKEY, config._blackmtimes)
+        cache = config.cache.get(HISTKEY, {})
+        cache.update(config._blackmtimes)
+        config.cache.set(HISTKEY, cache)
 
 
 class BlackItem(pytest.Item, pytest.File):
