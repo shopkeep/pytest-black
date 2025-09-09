@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from py.path import local
+from pytest_black import pytest_collect_file
 
 
 pytestmark = pytest.mark.usefixtures('black_available')
@@ -176,3 +178,28 @@ def test_pytest_deprecation_warning(testdir):
 
     out = "\n".join(result.stdout.lines)
     assert "PytestUnknownMarkWarning" not in out
+
+
+def test_gathers_pyi_files(tmpdir, request):
+    """Assert that pytest_collect_file handles *.pyi files"""
+    config = request.session
+    config.config.option.black = True
+    assert pytest_collect_file(local("test.pyi"), config) is not None
+
+
+def test_gathers_py_files(tmpdir, request):
+    """Assert that pytest_collect_file handles *.py files"""
+    config = request.session
+    config.config.option.black = True
+    assert pytest_collect_file(local("test.py"), config) is not None
+
+
+def test_ignores_pyc_files(tmpdir, request):
+    """
+    Assert that pytest_collect_file ignores *.pyc files
+
+    Used as an example of a non *.pyi and *.py)
+    """
+    config = request.session
+    config.config.option.black = True
+    assert pytest_collect_file(local("test.pyc"), config) is None
